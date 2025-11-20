@@ -47,5 +47,4 @@ build:
 [doc('Run knit sync on the project documentation')]
 [group('knit')]
 knit:
-    # Assuming knit is installed in the environment or run via python -m
-    uv run knit sync README.md AGENTS.md DESIGN.md
+    uv run knit sync
