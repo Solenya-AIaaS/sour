@@ -37,12 +37,16 @@ Automatically visualize your directory structure. It's smart enough to pull desc
 
 ```markdown
 <!-- docs TREE path="." depth=2 dirs_only=true -->
+
+```
 .
-├── services
-│   ├── api # FastAPI GraphQL service
-│   └── model # ML inference service
-└── zoo
-    └── lion # The king of the jungle
+├── dist
+├── src
+│   └── knit
+└── tests
+    └── __pycache__
+```
+
 <!-- /docs -->
 ```
 
@@ -52,11 +56,13 @@ Embed recipes from your `justfile` directly into your docs. Perfect for "Quick S
 
 ```markdown
 <!-- docs JUST recipe="test" -->
-Run all tests (taste test everything 🧪)
+
+Run all tests
 
 ```bash
 just test
 ```
+
 <!-- /docs -->
 ```
 
@@ -77,7 +83,9 @@ def hello(content, options, file_path):
 Usage:
 ```markdown
 <!-- docs HELLO name="Knit" -->
-Hello Knit!
+
+<!-- Error: "Extension 'HELLO' not found" -->
+
 <!-- /docs -->
 ```
 
