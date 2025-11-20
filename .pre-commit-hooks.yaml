@@ -1,0 +1,7 @@
+- id: knit
+  name: knit
+  description: Auto-sync dynamic content in markdown files.
+  entry: knit sync
+  language: python
+  types: [markdown]
+  require_serial: true
