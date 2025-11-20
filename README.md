@@ -17,6 +17,16 @@ The quality of an agent's output can degrade significantly if there is outdated 
 
 **Knit** solves this by allowing you to "knit" your documentation together from the source of truth. Instead of copy-pasting output, you define *how* to generate it, ensuring your docs are always 100% accurate.
 
+## 🏗️ Why not Quarto?
+**DRY (Don't Repeat Yourself)**: Quarto is fantastic, but often relies on templates which can introduce duplication. Knit is designed to inject truth directly into your existing markdown files without the need for a complex build chain or intermediate template files.
+
+**Simplicity**: Quarto is a large, powerful ecosystem. Knit is a small, sharp tool designed specifically for maintaining context for Agents. It does one thing and does it well.
+
+## 🔒 Safety First
+**No Arbitrary Execution**: Unlike tools that allow running arbitrary bash commands in your documentation (an agentic security nightmare), Knit relies on typed, checked **Extensions**.
+
+**Secure by Design**: You define exactly what code can run via extensions. This prevents agents or malicious actors from using your documentation build system as a privilege escalation vector.
+
 ## ✨ Extensions
 
 Knit is designed around **Extensions**. It comes with powerful built-ins, but you can easily write your own in Python.
