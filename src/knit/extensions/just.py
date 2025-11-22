@@ -2,7 +2,7 @@ import re
 from pathlib import Path
 from knit.registry import register_extension
 
-def get_just_recipe(justfile_path: Path, recipe_name: str) -> str:
+def get_just_recipe(justfile_path: Path, recipe_name: str, format: str = "full", quarto_safe: bool = False) -> str:
     if not justfile_path.exists():
         return f"<!-- Error: justfile not found at {justfile_path} -->"
         
@@ -21,19 +21,40 @@ def get_just_recipe(justfile_path: Path, recipe_name: str) -> str:
     doc_string = doc_match.group(1) if doc_match else None
     recipe_code = recipe_match.group(0).strip()
     
-    output_parts = []
-    if doc_string:
-        output_parts.append(doc_string)
-        
-    output_parts.append(f"```bash\njust {recipe_name}\n```")
-    
-    return "\n\n".join(output_parts)
+    # Determine code fence syntax based on quarto_safe option
+    bash_fence = "```{{bash}}" if quarto_safe else "```bash"
+    just_fence = "```{{just}}" if quarto_safe else "```just"
+
+    # Generate output based on format
+    if format == "doc":
+        if doc_string:
+            return doc_string
+        return f"<!-- No doc string found for recipe '{recipe_name}' -->"
+
+    elif format == "command":
+        return f"{bash_fence}\njust {recipe_name}\n```"
+
+    elif format == "code":
+        return f"{just_fence}\n{recipe_code}\n```"
+
+    else:  # full
+        output_parts = []
+        if doc_string:
+            output_parts.append(doc_string)
+        output_parts.append(f"{bash_fence}\njust {recipe_name}\n```")
+        return "\n\n".join(output_parts)
 
 @register_extension("JUST")
 def just_extension(content: str, options: dict[str, str], file_path: Path) -> str:
     recipe = options.get("recipe")
     if not recipe:
         return "<!-- Error: 'recipe' option required -->"
+    
+    output_format = options.get("format", "full")
+    if output_format not in ("full", "doc", "command", "code"):
+        return f"<!-- Error: Invalid format '{output_format}'. Use: full, doc, command, or code -->"
+
+    quarto_safe = options.get("quarto_safe", "false").lower() == "true"
         
     # Find justfile
     # Try same dir, then parent, then root
@@ -55,4 +76,4 @@ def just_extension(content: str, options: dict[str, str], file_path: Path) -> st
         # Let's default to one of them for the error message
         justfile_path = file_path.parent / "justfile"
 
-    return get_just_recipe(justfile_path, recipe)
+    return get_just_recipe(justfile_path, recipe, output_format, quarto_safe)

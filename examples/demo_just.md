@@ -16,10 +16,27 @@ just hello
 ## Build Recipe (Code only)
 <!-- docs JUST recipe="build" format="code" -->
 
-Build the example
+```just
+build:
+    echo "Building..."
+```
 
-```bash
-just build
+<!-- /docs -->
+
+## Hello Recipe (Doc only)
+<!-- docs JUST recipe="hello" format="doc" -->
+
+Say hello
+
+<!-- /docs -->
+
+## Hello Recipe (Quarto Safe)
+<!-- docs JUST recipe="hello" quarto_safe="true" -->
+
+Say hello
+
+```{{bash}}
+just hello
 ```
 
 <!-- /docs -->
