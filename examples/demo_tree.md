@@ -22,7 +22,7 @@ This file demonstrates the `TREE` extension.
 ```
 .
 ├── nested # A nested directory for testing tree descriptions
-│   ├── even_more_nested
+│   ├── even_more_nested # We need to go deeper
 │   │   ├── most_nested
 │   │   ├── README.md
 │   │   ├── level_2.md
@@ -43,6 +43,23 @@ This file demonstrates the `TREE` extension.
 ```
 .
 └── nested # A nested directory for testing tree descriptions
+```
+
+<!-- /docs -->
+
+## Tree without Docs
+<!-- docs TREE path="." depth=2 add_docs=false -->
+
+```
+.
+├── nested
+│   ├── even_more_nested
+│   ├── README.md
+│   └── level_1.py
+├── README.md
+├── demo_just.md
+├── demo_tree.md
+└── justfile
 ```
 
 <!-- /docs -->

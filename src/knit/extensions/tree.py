@@ -1,4 +1,3 @@
-import re
 from pathlib import Path
 import yaml
 from knit.registry import register_extension
@@ -28,7 +27,7 @@ def generate_tree(
     exclude_patterns: list[str] | None = None,
     include_hidden: bool = False,
     dirs_only: bool = False,
-) -> list[str]:
+) -> list[tuple[str, Path]]:
     if exclude_patterns is None:
         exclude_patterns = []
 
@@ -60,7 +59,7 @@ def generate_tree(
             connector = "└── " if is_last else "├── "
             extension = "    " if is_last else "│   "
             
-            lines.append(f"{prefix}{connector}{item.name}")
+            lines.append((f"{prefix}{connector}{item.name}", item))
             
             if item.is_dir() and current_depth + 1 < max_depth:
                 lines.extend(
@@ -83,61 +82,36 @@ def generate_tree_content(directory: Path, options: dict[str, str]) -> str:
     path_str = options.get("path", ".")
     depth = int(options.get("depth", "1"))
     dirs_only = options.get("dirs_only", "false").lower() == "true"
+    add_docs = options.get("add_docs", "true").lower() == "true"
     exclude = options.get("exclude", "").split(",") if options.get("exclude") else []
     exclude = [p.strip() for p in exclude if p.strip()]
-    
-    # Default excludes if not provided? 
-    # The test `test_tree_exclude` passes explicit exclude.
-    # example.py had DEFAULT_EXCLUDES. Let's add them if needed or stick to minimal for now.
-    # For the test to pass, we just need to respect the passed exclude.
     
     target_dir = directory / path_str
     if not target_dir.exists():
         return f"Error: Directory not found: {target_dir}"
         
-    tree_lines = [path_str]
-    tree_lines.extend(
+    tree_items = [(path_str, target_dir)]
+    tree_items.extend(
         generate_tree(target_dir, "", depth, 0, exclude, False, dirs_only)
     )
     
     # Load descriptions from README.md files
-    descriptions = find_readme_descriptions(directory)
+    descriptions = find_readme_descriptions(directory) if add_docs else {}
 
     # Annotate tree with descriptions
     annotated_lines = []
 
-    for line in tree_lines:
-        # Extract directory/file name from tree line
-        match = re.search(r"[├└]── (.+?)$", line)
-        if match:
-            name = match.group(1).strip()
-
-            # Look up description
-            if path_str == ".":
-                lookup_path = name
-            else:
-                lookup_path = f"{path_str}/{name}" if path_str != "." else name
-
-            # Normalize path for lookup
-            # descriptions keys are str(Path.relative_to), so they use os.sep
-            # We should ensure lookup_path uses the same separator if we constructed it with /
-            lookup_path = str(Path(lookup_path))
-
-            if lookup_path in descriptions:
+    for line, item_path in tree_items:
+        try:
+            rel_path = item_path.relative_to(directory)
+            lookup_path = str(rel_path)
+            
+            if add_docs and lookup_path in descriptions:
                 annotated_lines.append(f"{line} # {descriptions[lookup_path]}")
             else:
                 annotated_lines.append(line)
-        else:
-            # Handle root line or others
-            # If the line matches path_str exactly, it's likely the root
-            if line.strip() == path_str:
-                 lookup_path = str(Path(path_str))
-                 if lookup_path in descriptions:
-                     annotated_lines.append(f"{line} # {descriptions[lookup_path]}")
-                 else:
-                     annotated_lines.append(line)
-            else:
-                annotated_lines.append(line)
+        except ValueError:
+            annotated_lines.append(line)
 
     return "\n".join(annotated_lines)
 
