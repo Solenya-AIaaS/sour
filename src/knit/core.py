@@ -1,6 +1,6 @@
 import re
 from pathlib import Path
-from typing import Callable
+from collections.abc import Callable
 
 def parse_block(block: str) -> tuple[str, dict[str, str]]:
     """Parse a transform block header to extract name and options.

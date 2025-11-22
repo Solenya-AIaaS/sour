@@ -1,4 +1,4 @@
-from typing import Callable, Any
+from collections.abc import Callable
 from pathlib import Path
 
 # Type alias for extension functions
