@@ -3,7 +3,14 @@ import yaml
 from knit.registry import register_extension
 
 def find_readme_descriptions(root: Path) -> dict[str, str]:
-    """Find all README.md files and extract directory descriptions from YAML frontmatter."""
+    """Find all README.md files and extract directory descriptions from YAML frontmatter.
+    
+    Args:
+        root: The root directory to search from.
+
+    Returns:
+        A dictionary mapping relative directory paths to their descriptions.
+    """
     descriptions = {}
     for readme in root.rglob("README.md"):
         try:
@@ -28,6 +35,22 @@ def generate_tree(
     include_hidden: bool = False,
     dirs_only: bool = False,
 ) -> list[tuple[str, Path]]:
+    """Recursively generates a directory tree structure.
+
+    Args:
+        directory: The directory to traverse.
+        prefix: The prefix string for the current line (used for indentation).
+        max_depth: Maximum depth to traverse.
+        current_depth: Current depth in the traversal.
+        exclude_patterns: List of glob patterns to exclude.
+        include_hidden: Whether to include hidden files/directories.
+        dirs_only: Whether to list only directories.
+
+    Returns:
+        A list of tuples, where each tuple contains:
+        - The formatted tree line string.
+        - The absolute Path object corresponding to that line.
+    """
     if exclude_patterns is None:
         exclude_patterns = []
 
@@ -78,7 +101,20 @@ def generate_tree(
     return lines
 
 def generate_tree_content(directory: Path, options: dict[str, str]) -> str:
-    """Generate the tree content string based on options."""
+    """Generate the tree content string based on options.
+    
+    Args:
+        directory: The base directory to generate the tree from.
+        options: Dictionary of options.
+            - path: Relative path to start tree from (default: ".").
+            - depth: Max depth (default: "1").
+            - dirs_only: "true" or "false" (default: "false").
+            - add_docs: "true" or "false" (default: "true").
+            - exclude: Comma-separated list of patterns to exclude.
+
+    Returns:
+        The generated tree string, optionally annotated with descriptions.
+    """
     path_str = options.get("path", ".")
     depth = int(options.get("depth", "1"))
     dirs_only = options.get("dirs_only", "false").lower() == "true"
@@ -118,6 +154,16 @@ def generate_tree_content(directory: Path, options: dict[str, str]) -> str:
 # This function matches the signature expected by the registry
 @register_extension("TREE")
 def tree_extension(content: str, options: dict[str, str], file_path: Path) -> str:
+    """Knit extension to generate a directory tree.
+
+    Args:
+        content: The existing content within the block (ignored).
+        options: Dictionary of options from the block header.
+        file_path: Path to the markdown file being processed.
+
+    Returns:
+        The generated markdown content wrapped in a code block.
+    """
     # content is the existing content inside the block (unused for tree usually)
     # file_path is the path of the markdown file
     return f"```\n{generate_tree_content(file_path.parent, options)}\n```"

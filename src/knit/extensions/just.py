@@ -4,6 +4,19 @@ from textwrap import dedent
 from knit.registry import register_extension
 
 def get_just_recipe(justfile_path: Path, recipe_name: str, format_str: str = "docs+command", quarto_safe: bool = False) -> str:
+    """Extracts a recipe from a justfile and formats it for documentation.
+
+    Args:
+        justfile_path: Path to the justfile.
+        recipe_name: Name of the recipe to extract.
+        format_str: Comma or plus separated list of components to include.
+            Options: "docs", "command", "code", "target_command".
+            Aliases: "full" (docs+command), "doc" (docs).
+        quarto_safe: If True, uses `{{bash}}` instead of `bash` for code fences.
+
+    Returns:
+        Formatted markdown string containing the requested recipe components.
+    """
     if not justfile_path.exists():
         return f"<!-- Error: justfile not found at {justfile_path} -->"
         
@@ -74,6 +87,19 @@ def get_just_recipe(justfile_path: Path, recipe_name: str, format_str: str = "do
 
 @register_extension("JUST")
 def just_extension(content: str, options: dict[str, str], file_path: Path) -> str:
+    """Knit extension to include recipes from a justfile.
+
+    Args:
+        content: The existing content within the block (ignored).
+        options: Dictionary of options from the block header.
+            - recipe: Name of the recipe (required).
+            - format: Output format (default: "docs+command").
+            - quarto_safe: "true" or "false" (default: "false").
+        file_path: Path to the markdown file being processed.
+
+    Returns:
+        The generated markdown content.
+    """
     recipe = options.get("recipe")
     if not recipe:
         return "<!-- Error: 'recipe' option required -->"
