@@ -100,10 +100,46 @@ def generate_tree_content(directory: Path, options: dict[str, str]) -> str:
         generate_tree(target_dir, "", depth, 0, exclude, False, dirs_only)
     )
     
-    # Annotations logic (simplified for now as tests don't check annotations yet)
-    # But good to have.
-    
-    return "\n".join(tree_lines)
+    # Load descriptions from README.md files
+    descriptions = find_readme_descriptions(directory)
+
+    # Annotate tree with descriptions
+    annotated_lines = []
+
+    for line in tree_lines:
+        # Extract directory/file name from tree line
+        match = re.search(r"[├└]── (.+?)$", line)
+        if match:
+            name = match.group(1).strip()
+
+            # Look up description
+            if path_str == ".":
+                lookup_path = name
+            else:
+                lookup_path = f"{path_str}/{name}" if path_str != "." else name
+
+            # Normalize path for lookup
+            # descriptions keys are str(Path.relative_to), so they use os.sep
+            # We should ensure lookup_path uses the same separator if we constructed it with /
+            lookup_path = str(Path(lookup_path))
+
+            if lookup_path in descriptions:
+                annotated_lines.append(f"{line} # {descriptions[lookup_path]}")
+            else:
+                annotated_lines.append(line)
+        else:
+            # Handle root line or others
+            # If the line matches path_str exactly, it's likely the root
+            if line.strip() == path_str:
+                 lookup_path = str(Path(path_str))
+                 if lookup_path in descriptions:
+                     annotated_lines.append(f"{line} # {descriptions[lookup_path]}")
+                 else:
+                     annotated_lines.append(line)
+            else:
+                annotated_lines.append(line)
+
+    return "\n".join(annotated_lines)
 
 # This function matches the signature expected by the registry
 @register_extension("TREE")
