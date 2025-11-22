@@ -31,3 +31,15 @@ def test_get_recipe_missing(justfile_content):
 def test_justfile_not_found(tmp_path):
     recipe = get_just_recipe(tmp_path / "nonexistent", "test")
     assert "justfile not found" in recipe
+
+def test_get_recipe_formats(justfile_content):
+    # Test docs+target_command
+    recipe = get_just_recipe(justfile_content, "build", format_str="docs+target_command")
+    assert "Build project" in recipe
+    assert "uv build" in recipe
+    assert "just build" not in recipe
+
+    # Test command only
+    recipe = get_just_recipe(justfile_content, "test", format_str="command")
+    assert "Run tests" not in recipe
+    assert "just test" in recipe

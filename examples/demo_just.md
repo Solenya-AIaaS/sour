@@ -40,3 +40,23 @@ just hello
 ```
 
 <!-- /docs -->
+
+## Build Recipe (Target Command)
+<!-- docs JUST recipe="build" format="docs+target_command" -->
+
+Build the example
+
+```bash
+echo "Building..."
+```
+
+<!-- /docs -->
+
+## Hello Recipe (Command Only)
+<!-- docs JUST recipe="hello" format="command" -->
+
+```bash
+just hello
+```
+
+<!-- /docs -->
