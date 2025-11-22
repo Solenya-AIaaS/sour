@@ -1,0 +1,9 @@
+# Justfile for examples
+
+[doc('Say hello')]
+hello name="World":
+    echo "Hello {{name}}!"
+
+[doc('Build the example')]
+build:
+    echo "Building..."
