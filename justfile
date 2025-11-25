@@ -41,10 +41,10 @@ build:
     uv build
 
 # ============================================================================
-# 🧶 Knit
+# 🥒 Sole
 # ============================================================================
 
-[doc('Run knit sync on the project documentation')]
-[group('knit')]
-knit:
-    uv run knit sync
+[doc('Run sole sync on the project documentation')]
+[group('sole')]
+sole:
+    uv run sole sync

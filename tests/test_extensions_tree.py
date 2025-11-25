@@ -1,6 +1,6 @@
 import pytest
 from pathlib import Path
-from knit.extensions.tree import generate_tree_content
+from sole.extensions.tree import generate_tree_content
 
 @pytest.fixture
 def temp_dir_structure(tmp_path):

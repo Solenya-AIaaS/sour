@@ -1,3 +1,3 @@
 # Examples
 
-This directory contains example markdown files to demonstrate `knit` capabilities.
+This directory contains example markdown files to demonstrate `sole` capabilities.

@@ -1,4 +1,4 @@
-from knit.core import parse_block, process_content
+from sole.core import parse_block, process_content
 
 def test_parse_block_simple():
     block = '<!-- docs TREE path="." -->'
