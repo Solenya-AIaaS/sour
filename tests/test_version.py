@@ -1,4 +1,4 @@
-from knit import __version__
+from sour import __version__
 
 
 def test_version():

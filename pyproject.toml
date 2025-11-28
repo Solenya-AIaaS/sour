@@ -1,16 +1,22 @@
 [project]
-name = "knit"
+name = "sour"
 version = "0.1.0"
 description = "A tool for dynamically generating markdown files using references to commands."
 readme = "README.md"
+license = { file = "LICENSE" }
 authors = [{ name = "Solenya AI", email = "Solenya-AIaaS@users.noreply.github.com" }]
 requires-python = ">=3.12"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Text Processing :: Markup :: Markdown",
 ]
+keywords = ["documentation", "markdown", "generator", "sour", "devops"]
+urls = { Repository = "https://github.com/Solenya-AIaaS/sour", Issues = "https://github.com/Solenya-AIaaS/sour/issues" }
 
 dependencies = [
     "typer>=0.9.0",
@@ -27,14 +33,14 @@ dev = [
 ]
 
 [project.scripts]
-knit = "knit.main:app"
+sour = "sour.main:app"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/knit"]
+packages = ["src/sour"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

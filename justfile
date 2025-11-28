@@ -41,10 +41,10 @@ build:
     uv build
 
 # ============================================================================
-# 🧶 Knit
+# 🥒 Sour
 # ============================================================================
 
-[doc('Run knit sync on the project documentation')]
-[group('knit')]
-knit:
-    uv run knit sync
+[doc('Run sour sync on the project documentation')]
+[group('sour')]
+sour:
+    uv run sour sync

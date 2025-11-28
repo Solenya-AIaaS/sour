@@ -3,14 +3,14 @@ from pathlib import Path
 from typing import Annotated
 from rich.console import Console
 
-from knit import __version__
-from knit.core import process_content, clear_content
-from knit.registry import get_extension
+from sour import __version__
+from sour.core import process_content, clear_content
+from sour.registry import get_extension
 # Importing these modules registers the extensions via decorators
-import knit.extensions.tree
-import knit.extensions.just
+import sour.extensions.tree
+import sour.extensions.just
 
-app = typer.Typer(help="Knit: Auto-sync dynamic content in markdown files")
+app = typer.Typer(help="Sour: Auto-sync dynamic content in markdown files")
 console = Console()
 
 def load_extensions():
@@ -22,15 +22,15 @@ def load_extensions():
 @app.callback()
 def callback():
     """
-    Knit: A tool for maintaining dynamic markdown documentation.
+    Sour: A tool for maintaining dynamic markdown documentation.
     """
     load_extensions()
 
 
 @app.command()
 def version():
-    """Show the version of knit."""
-    console.print(f"Knit version: {__version__}")
+    """Show the version of sour."""
+    console.print(f"Sour version: {__version__}")
 
 
 @app.command()

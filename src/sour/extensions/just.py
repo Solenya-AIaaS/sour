@@ -1,7 +1,7 @@
 import re
 from pathlib import Path
 from textwrap import dedent
-from knit.registry import register_extension
+from sour.registry import register_extension
 
 def get_just_recipe(justfile_path: Path, recipe_name: str, format_str: str = "docs+command", quarto_safe: bool = False) -> str:
     """Extracts a recipe from a justfile and formats it for documentation.
@@ -87,7 +87,7 @@ def get_just_recipe(justfile_path: Path, recipe_name: str, format_str: str = "do
 
 @register_extension("JUST")
 def just_extension(content: str, options: dict[str, str], file_path: Path) -> str:
-    """Knit extension to include recipes from a justfile.
+    """Sour extension to include recipes from a justfile.
 
     Args:
         content: The existing content within the block (ignored).
