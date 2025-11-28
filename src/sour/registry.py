@@ -7,7 +7,7 @@ ExtensionFunc = Callable[[str, dict[str, str], Path], str]
 _EXTENSIONS: dict[str, ExtensionFunc] = {}
 
 def register_extension(name: str) -> Callable[[ExtensionFunc], ExtensionFunc]:
-    """Decorator to register a function as a sole extension."""
+    """Decorator to register a function as a sour extension."""
     def decorator(func: ExtensionFunc) -> ExtensionFunc:
         _EXTENSIONS[name] = func
         return func

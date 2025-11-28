@@ -1,5 +1,5 @@
 import pytest
-from sole.registry import register_extension, get_extension, clear_registry
+from sour.registry import register_extension, get_extension, clear_registry
 
 @pytest.fixture(autouse=True)
 def clean_registry():

@@ -1,5 +1,5 @@
-import sole
+import sour
 import sys
 
-print(f"Successfully imported sole version: {sole.__version__}")
+print(f"Successfully imported sour version: {sour.__version__}")
 sys.exit(0)

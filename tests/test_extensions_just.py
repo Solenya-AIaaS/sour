@@ -1,5 +1,5 @@
 import pytest
-from sole.extensions.just import get_just_recipe
+from sour.extensions.just import get_just_recipe
 
 @pytest.fixture
 def justfile_content(tmp_path):

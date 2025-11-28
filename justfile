@@ -41,10 +41,10 @@ build:
     uv build
 
 # ============================================================================
-# 🥒 Sole
+# 🥒 Sour
 # ============================================================================
 
-[doc('Run sole sync on the project documentation')]
-[group('sole')]
-sole:
-    uv run sole sync
+[doc('Run sour sync on the project documentation')]
+[group('sour')]
+sour:
+    uv run sour sync

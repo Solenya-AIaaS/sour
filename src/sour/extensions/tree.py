@@ -1,6 +1,6 @@
 from pathlib import Path
 import yaml
-from sole.registry import register_extension
+from sour.registry import register_extension
 
 def find_readme_descriptions(root: Path) -> dict[str, str]:
     """Find all README.md files and extract directory descriptions from YAML frontmatter.
@@ -154,7 +154,7 @@ def generate_tree_content(directory: Path, options: dict[str, str]) -> str:
 # This function matches the signature expected by the registry
 @register_extension("TREE")
 def tree_extension(content: str, options: dict[str, str], file_path: Path) -> str:
-    """Sole extension to generate a directory tree.
+    """Sour extension to generate a directory tree.
 
     Args:
         content: The existing content within the block (ignored).

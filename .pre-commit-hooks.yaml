@@ -1,7 +1,7 @@
-- id: sole
-  name: sole
+- id: sour
+  name: sour
   description: Auto-sync dynamic content in markdown files.
-  entry: sole sync
+  entry: sour sync
   language: python
   types: [markdown]
   require_serial: true
